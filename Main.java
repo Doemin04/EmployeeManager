@@ -20,6 +20,7 @@ public class Main {
             System.out.print("Select: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
+            System.out.println();
 
             if (choice == 1) {
                 System.out.print("Name: ");

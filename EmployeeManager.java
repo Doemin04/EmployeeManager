@@ -3,7 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeManager {
+    private static List<FullTimeEmployee> employeesInMemory = new ArrayList<>();
+
     public void addEmployee(FullTimeEmployee emp) {
+        employeesInMemory.add(emp); 
         try (Connection conn = DBConnection.getConnection()) {
             String sql = "INSERT INTO employeeData (empId, name, phoneNumber, emailAddress, ssn, salary, jobTitle, division) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -50,6 +53,11 @@ public class EmployeeManager {
     }
 
     public FullTimeEmployee searchEmployee(String keyword) {
+        for (FullTimeEmployee emp : employeesInMemory) {
+            if (emp.name.equals(keyword) || emp.ssn.equals(keyword) || String.valueOf(emp.empId).equals(keyword)) {
+                return emp; // Returns the object with payHistory
+            }
+        }
         try (Connection conn = DBConnection.getConnection()) {
             String sql = "SELECT * FROM employeeData WHERE name = ? OR ssn = ? OR empId = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
