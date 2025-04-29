@@ -1,9 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class FullTimeEmployee extends Employee {
-    private List<PayStatement> payHistory;
-
     public FullTimeEmployee(String name, String phoneNumber, String emailAddress, int empId, String ssn, double salary, String jobTitle, String division) {
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -13,7 +8,6 @@ public class FullTimeEmployee extends Employee {
         this.salary = salary;
         this.jobTitle = jobTitle;
         this.division = division;
-        this.payHistory = new ArrayList<>();
     }
 
     @Override
@@ -36,13 +30,5 @@ public class FullTimeEmployee extends Employee {
     @Override
     public void setSalary(double salary) {
         this.salary = salary;
-    }
-
-    public List<PayStatement> getPayStatementHistory() {
-        return payHistory;
-    }
-
-    public void addPayStatement(PayStatement pay) {
-        payHistory.add(pay);
     }
 }

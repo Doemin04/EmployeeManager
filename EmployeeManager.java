@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeManager {
-
     public void addEmployee(FullTimeEmployee emp) {
         try (Connection conn = DBConnection.getConnection()) {
             String sql = "INSERT INTO employeeData (empId, name, phoneNumber, emailAddress, ssn, salary, jobTitle, division) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -22,6 +21,34 @@ public class EmployeeManager {
         }
     }
 
+    public void addPayStatement(int empId, double amount) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "INSERT INTO pay_statement (empId, date, amount) VALUES (?, CURRENT_DATE(), ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, empId);
+            stmt.setDouble(2, amount);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<PayStatement> getPayHistory(int empId) {
+        List<PayStatement> history = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "SELECT date, amount FROM pay_statement WHERE empId = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, empId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                history.add(new PayStatement(rs.getDate("date"), rs.getDouble("amount")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return history;
+    }
+
     public FullTimeEmployee searchEmployee(String keyword) {
         try (Connection conn = DBConnection.getConnection()) {
             String sql = "SELECT * FROM employeeData WHERE name = ? OR ssn = ? OR empId = ?";
@@ -30,7 +57,6 @@ public class EmployeeManager {
             stmt.setString(2, keyword);
             stmt.setString(3, keyword);
             ResultSet rs = stmt.executeQuery();
-
             if (rs.next()) {
                 return new FullTimeEmployee(
                         rs.getString("name"),
@@ -80,9 +106,8 @@ public class EmployeeManager {
             String sql = "SELECT * FROM employeeData";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-
             while (rs.next()) {
-                FullTimeEmployee emp = new FullTimeEmployee(
+                employees.add(new FullTimeEmployee(
                         rs.getString("name"),
                         rs.getString("phoneNumber"),
                         rs.getString("emailAddress"),
@@ -91,8 +116,7 @@ public class EmployeeManager {
                         rs.getDouble("salary"),
                         rs.getString("jobTitle"),
                         rs.getString("division")
-                );
-                employees.add(emp);
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();

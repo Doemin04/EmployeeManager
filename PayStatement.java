@@ -1,14 +1,14 @@
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class PayStatement {
-    private LocalDate date;
+    private Date date;
     private double amount;
 
-    public PayStatement(LocalDate date, double amount) {
+    public PayStatement(Date date, double amount) {
         this.date = date;
         this.amount = amount;
     }
 
-    public LocalDate getDate() { return date; }
+    public Date getDate() { return date; }
     public double getAmount() { return amount; }
 }

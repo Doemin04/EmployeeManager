@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
@@ -12,10 +11,10 @@ public class Main {
             System.out.println("1. Add Employee");
             System.out.println("2. Search Employee");
             System.out.println("3. Update Employee");
-            System.out.println("4. Update Salary By Range");
+            System.out.println("4. Update Salary by Range");
             System.out.println("5. View Pay History");
-            System.out.println("6. Report: Total Pay By Division");
-            System.out.println("7. Report: Total Pay By Job Title");
+            System.out.println("6. Total Pay by Division");
+            System.out.println("7. Total Pay by Job Title");
             System.out.println("8. View All Employees");
             System.out.println("0. Exit");
             System.out.print("Select: ");
@@ -43,8 +42,8 @@ public class Main {
                 String division = scanner.nextLine();
 
                 FullTimeEmployee emp = new FullTimeEmployee(name, phone, email, empId, ssn, salary, jobTitle, division);
-                emp.addPayStatement(new PayStatement(LocalDate.now(), salary));
                 manager.addEmployee(emp);
+                manager.addPayStatement(empId, salary);
                 System.out.println("Employee added successfully!");
 
             } else if (choice == 2) {
@@ -95,8 +94,10 @@ public class Main {
                 reportService.payByJobTitle();
 
             } else if (choice == 8) {
+                System.out.println("Employee List:");
+                System.out.println("ID | Name | Pay | Division | Job Title");
                 for (FullTimeEmployee emp : manager.getEmployees()) {
-                    System.out.println(emp.empId + ": " + emp.name + " | " + emp.division + " | " + emp.jobTitle + " | $" + emp.salary);
+                    System.out.println(emp.empId + " | " + emp.name + " | $" + emp.salary + " | " + emp.division + " | " + emp.jobTitle);
                 }
 
             } else if (choice == 0) {

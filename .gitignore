@@ -1,7 +1,4 @@
-# Ignore all compiled Java class files
 *.class
-
-# Ignore temporary, backup, and system files
 *.log
 *.tmp
 *.bak

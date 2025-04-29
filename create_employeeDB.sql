@@ -1,10 +1,6 @@
--- Create Database
 CREATE DATABASE IF NOT EXISTS employeeDB;
-
--- Use Database
 USE employeeDB;
 
--- Create Table
 CREATE TABLE IF NOT EXISTS employeeData (
     empId INT PRIMARY KEY,
     name VARCHAR(100),
@@ -14,4 +10,12 @@ CREATE TABLE IF NOT EXISTS employeeData (
     salary DOUBLE,
     jobTitle VARCHAR(100),
     division VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS pay_statement (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    empId INT,
+    date DATE,
+    amount DOUBLE,
+    FOREIGN KEY (empId) REFERENCES employeeData(empId) ON DELETE CASCADE
 );
